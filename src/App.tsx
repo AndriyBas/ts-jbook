@@ -8,8 +8,8 @@ const App = () => {
     "const App = () => { return <div>Hello there!</div>;}\nconsole.log(App);"
     // 'import "bulma/css/bulma.css"'
   );
-  const [code, setCode] = React.useState("");
   const serviceRef = React.useRef<esbuild.Service | null>(null);
+  const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
 
   const startService = async () => {
     serviceRef.current = await esbuild.startService({
@@ -29,6 +29,11 @@ const App = () => {
     //   loader: "jsx",
     //   target: "es2015",
     // });
+
+    if (iframeRef.current) {
+      iframeRef.current.srcdoc = html;
+    }
+
     const res = await serviceRef.current.build({
       entryPoints: ["index.js"],
       bundle: true,
@@ -40,13 +45,35 @@ const App = () => {
       },
     });
     console.log(res);
-    setCode(res.outputFiles[0].text);
-    try {
-      eval(res.outputFiles[0].text);
-    } catch (error) {
-      console.error(error);
-    }
+    iframeRef.current?.contentWindow?.postMessage(res.outputFiles[0].text, "*");
   };
+
+  const html = `
+<html>
+  <head></head>
+  <body>
+    <div id="root"></div>
+    <div id="errorRoot" style="color: red"></div>
+    <script>
+      window.addEventListener(
+        "message",
+        (event) => {
+          try {
+            eval(event.data);
+          } catch (error) {
+            console.error(error);
+            const rootEl = document.getElementById("errorRoot");
+            rootEl.innerHTML = "<div><h4>Runtime Error</h4>" + error + "</div>";
+          }
+        },
+        false
+      );
+    </script>
+  </body>
+</html>
+
+  `;
+
   return (
     <div>
       <textarea
@@ -57,8 +84,12 @@ const App = () => {
       <div>
         <button onClick={onClick}>Submit</button>
       </div>
-      <pre>{code}</pre>
-      <iframe src="/test.html" sandbox="" title="execSandbox"></iframe>
+      <iframe
+        ref={iframeRef}
+        srcDoc={html}
+        sandbox="allow-forms allow-modals allow-popups allow-presentation allow-scripts allow-downloads allow-pointer-lock"
+        title="Code Preview"
+      ></iframe>
     </div>
   );
 };

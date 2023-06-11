@@ -1,6 +1,22 @@
 <html>
-  <head> </head>
+  <head></head>
   <body>
-    <h1>Hi there!</h1>
+    <div id="root"></div>
+    <div id="errorRoot" style="color: red"></div>
+    <script>
+      window.addEventListener(
+        "message",
+        (event) => {
+          try {
+            eval(event.data);
+          } catch (error) {
+            console.error(error);
+            const rootEl = document.getElementById("errorRoot");
+            rootEl.innerHTML = "<div><h4>Runtime Error</h4>" + error + "</div>";
+          }
+        },
+        false
+      );
+    </script>
   </body>
 </html>
