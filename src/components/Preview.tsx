@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./preview.css";
 
 interface PreviewProps {
   code: string;
@@ -15,18 +16,26 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
   }, [code]);
 
   return (
-    <iframe
-      ref={iframeRef}
-      srcDoc={previewIframeCode}
-      sandbox="allow-forms allow-modals allow-popups allow-presentation allow-scripts allow-downloads allow-pointer-lock"
-      title="Code Preview"
-    />
+    <div className="preview-wrapper">
+      <iframe
+        ref={iframeRef}
+        srcDoc={previewIframeCode}
+        sandbox="allow-forms allow-modals allow-popups allow-presentation allow-scripts allow-downloads allow-pointer-lock"
+        title="Code Preview"
+      />
+    </div>
   );
 };
 
 const previewIframeCode = `
 <html>
-  <head></head>
+  <head>
+    <style>
+      html {
+        background-color: white;
+      }
+    </style>
+  </head>
   <body>
     <div id="root"></div>
     <div id="errorRoot" style="color: red"></div>
@@ -47,6 +56,7 @@ const previewIframeCode = `
     </script>
   </body>
 </html>
+
   `;
 
 export default Preview;

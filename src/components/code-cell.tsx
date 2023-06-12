@@ -2,6 +2,7 @@ import * as React from "react";
 import CodeEditor from "./code-editor";
 import Preview from "./Preview";
 import bundle from "../bundler";
+import Resizable from "./resizable";
 
 const DEFAULT_VAL =
   "const App = () => { return <div>Hello there!</div>;}\nconsole.log(App);";
@@ -17,16 +18,17 @@ const CodeCell = () => {
   };
 
   return (
-    <div>
-      <CodeEditor
-        initialValue={DEFAULT_VAL}
-        onChange={(value) => setInput(value)}
-      />
-      <div>
-        <button onClick={onClick}>Submit</button>
+    <Resizable direction="vertical">
+      <div style={{ height: "100%", display: "flex", flexDirection: "row" }}>
+        <Resizable direction="horizontal">
+          <CodeEditor
+            initialValue={DEFAULT_VAL}
+            onChange={(value) => setInput(value)}
+          />
+        </Resizable>
+        <Preview code={code} />
       </div>
-      <Preview code={code} />
-    </div>
+    </Resizable>
   );
 };
 
