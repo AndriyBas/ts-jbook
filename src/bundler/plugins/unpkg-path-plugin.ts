@@ -8,13 +8,13 @@ export const unpkgPathPlugin = () => {
     name: "unpkg-path-plugin",
     setup(build: esbuild.PluginBuild) {
       build.onResolve({ filter: /(^index\.js)$/ }, (args: any) => {
-        console.log("onResole index.js", args);
+        // console.log("onResole index.js", args);
         // entry 'index.js'
         return { path: args.path, namespace: "a" };
       });
 
       build.onResolve({ filter: /^\.+\// }, (args: any) => {
-        console.log("onResole relative", args);
+        // console.log("onResole relative", args);
         // relative file of the module (with './' or '../')
         const url = new URL(
           args.path,
@@ -27,7 +27,7 @@ export const unpkgPathPlugin = () => {
       });
 
       build.onResolve({ filter: /.*/ }, (args: any) => {
-        console.log("onResole main module", args);
+        // console.log("onResole main module", args);
         // main file of the module
         return {
           namespace: "a",

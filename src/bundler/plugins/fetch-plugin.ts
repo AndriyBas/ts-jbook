@@ -17,7 +17,7 @@ export const fetchPlugin = (inputCode: string) => {
     name: "fetch-plugin",
     setup(build: esbuild.PluginBuild) {
       build.onLoad({ filter: /(^index\.js$)/ }, (args: any) => {
-        console.log("onLoad index.js", args);
+        // console.log("onLoad index.js", args);
         // entry index.js
         return {
           loader: "jsx",
@@ -34,7 +34,7 @@ export const fetchPlugin = (inputCode: string) => {
       });
 
       build.onLoad({ filter: /\.css$/ }, async (args: any) => {
-        console.log("onLoad .css", args);
+        // console.log("onLoad .css", args);
         // download and append CSS
         const { data, request } = await axios.get(args.path);
 
@@ -57,7 +57,7 @@ export const fetchPlugin = (inputCode: string) => {
       });
 
       build.onLoad({ filter: /.*/ }, async (args: any) => {
-        console.log("onLoad JSX", args);
+        // console.log("onLoad JSX", args);
         // process JSX
 
         const { data, request } = await axios.get(args.path);
