@@ -2,12 +2,14 @@ import * as esbuild from "esbuild-wasm";
 import * as React from "react";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
+import CodeEditor from "./components/code-editor";
+
+const DEFAULT_VAL =
+  "const App = () => { return <div>Hello there!</div>;}\nconsole.log(App);";
+// 'import "bulma/css/bulma.css"'
 
 const App = () => {
-  const [input, setInput] = React.useState(
-    "const App = () => { return <div>Hello there!</div>;}\nconsole.log(App);"
-    // 'import "bulma/css/bulma.css"'
-  );
+  const [input, setInput] = React.useState(DEFAULT_VAL);
   const serviceRef = React.useRef<esbuild.Service | null>(null);
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
 
@@ -76,6 +78,10 @@ const App = () => {
 
   return (
     <div>
+      <CodeEditor
+        initialValue={DEFAULT_VAL}
+        onChange={(value) => setInput(value)}
+      />
       <textarea
         rows={5}
         value={input}
