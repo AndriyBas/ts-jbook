@@ -1,11 +1,18 @@
 import * as React from "react";
 import MDEditor from "@uiw/react-md-editor";
 import "./text-editor.css";
+import { Cell } from "../state";
+import { useActions } from "../hooks/useActions";
+import ActionBar from "./ActionBar";
 
-const TextEditor: React.FC = () => {
+interface TextEditorProps {
+  cell: Cell;
+}
+
+const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
   const divRef = React.useRef<HTMLDivElement | null>(null);
   const [editing, setEditing] = React.useState(false);
-  const [value, setValue] = React.useState("# Header\n**Hello world!!!**");
+  const { updateCell } = useActions();
 
   React.useEffect(() => {
     const listener = (event: MouseEvent) => {
@@ -27,17 +34,26 @@ const TextEditor: React.FC = () => {
   if (editing) {
     return (
       <div ref={divRef} className="text-editor">
-        <MDEditor value={value} onChange={(val) => setValue(val ?? "")} />
+        <MDEditor
+          value={cell.content}
+          onChange={(val) => updateCell(cell.id, val ?? "")}
+        />
       </div>
     );
   }
 
   return (
-    <div onClick={() => setEditing(true)} className="text-editor card">
-      <div className="card-content">
-        <MDEditor.Markdown source={value} style={{ background: "none" }} />
+    <>
+      <div onClick={() => setEditing(true)} className="text-editor card">
+        <div className="card-content">
+          <MDEditor.Markdown
+            source={cell.content || "Click to edit"}
+            style={{ background: "none" }}
+          />
+        </div>
       </div>
-    </div>
+      <ActionBar cellId={cell.id} />
+    </>
   );
 };
 

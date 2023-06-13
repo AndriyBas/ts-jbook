@@ -1,6 +1,7 @@
 import * as React from "react";
 // import CodeCell from "./components/CodeCell";
-import TextEditor from "./components/TextEditor";
+// import TextEditor from "./components/TextEditor";
+import CellList from "./components/CellList";
 
 const App = () => {
   React.useEffect(() => {
@@ -18,8 +19,9 @@ const App = () => {
   }, []);
   return (
     <div>
-      <TextEditor />
-      <br />
+      <CellList />
+      {/* <TextEditor /> */}
+      {/* <br /> */}
       {/* <CodeCell /> */}
     </div>
   );
