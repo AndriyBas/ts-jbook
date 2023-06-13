@@ -1,0 +1,21 @@
+.w-md-editor .title {
+  line-height: unset !important;
+  font-size: unset !important;
+  font-weight: unset !important;
+}
+
+.text-editor .w-md-editor-bar svg {
+  display: none;
+}
+
+.text-editor .w-md-editor-bar {
+  position: relative;
+  width: 100%;
+  cursor: row-resize;
+  height: 11px;
+  top: 2px;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=");
+  background-color: #37414b;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}

@@ -1,8 +1,8 @@
 import * as React from "react";
-import CodeEditor from "./code-editor";
+import CodeEditor from "./CodeEditor";
 import Preview from "./Preview";
 import bundle from "../bundler";
-import Resizable from "./resizable";
+import Resizable from "./Resizable";
 
 const DEFAULT_VAL =
   "const App = () => { return <div>Hello there!</div>;}\nconsole.log(App);";
@@ -11,11 +11,13 @@ const DEFAULT_VAL =
 const CodeCell = () => {
   const [input, setInput] = React.useState(DEFAULT_VAL);
   const [code, setCode] = React.useState("");
+  const [error, setError] = React.useState("");
 
   React.useEffect(() => {
     const timer = setTimeout(async () => {
       const output = await bundle(input);
-      setCode(output);
+      setCode(output.code);
+      setError(output.error);
     }, 1000);
     return () => {
       clearTimeout(timer);
@@ -31,7 +33,7 @@ const CodeCell = () => {
             onChange={(value) => setInput(value)}
           />
         </Resizable>
-        <Preview code={code} />
+        <Preview code={code} error={error} />
       </div>
     </Resizable>
   );

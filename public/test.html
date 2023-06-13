@@ -10,15 +10,22 @@
     <div id="root"></div>
     <div id="errorRoot" style="color: red"></div>
     <script>
+      const handleError = (error) => {
+        console.error(error);
+        const rootEl = document.getElementById("errorRoot");
+        rootEl.innerHTML = "<div><h4>Runtime Error</h4>" + error + "</div>";
+      };
+      window.addEventListener("error", (event) => {
+        event.preventDefault();
+        handleError(event.error);
+      });
       window.addEventListener(
         "message",
         (event) => {
           try {
             eval(event.data);
           } catch (error) {
-            console.error(error);
-            const rootEl = document.getElementById("errorRoot");
-            rootEl.innerHTML = "<div><h4>Runtime Error</h4>" + error + "</div>";
+            handleError(error);
           }
         },
         false

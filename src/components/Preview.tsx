@@ -3,9 +3,10 @@ import "./preview.css";
 
 interface PreviewProps {
   code: string;
+  error: string;
 }
 
-const Preview: React.FC<PreviewProps> = ({ code }) => {
+const Preview: React.FC<PreviewProps> = ({ code, error }) => {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null);
 
   React.useEffect(() => {
@@ -25,6 +26,7 @@ const Preview: React.FC<PreviewProps> = ({ code }) => {
         sandbox="allow-forms allow-modals allow-popups allow-presentation allow-scripts allow-downloads allow-pointer-lock"
         title="Code Preview"
       />
+      {error && <div className="preview-error">{error}</div>}
     </div>
   );
 };
@@ -42,15 +44,22 @@ const previewIframeCode = `
     <div id="root"></div>
     <div id="errorRoot" style="color: red"></div>
     <script>
+      const handleError = (error) => {
+        console.error(error);
+        const rootEl = document.getElementById("errorRoot");
+        rootEl.innerHTML = "<div><h4>Runtime Error</h4>" + error + "</div>";
+      };
+      window.addEventListener("error", (event) => {
+        event.preventDefault();
+        handleError(event.error);
+      });
       window.addEventListener(
         "message",
         (event) => {
           try {
             eval(event.data);
           } catch (error) {
-            console.error(error);
-            const rootEl = document.getElementById("errorRoot");
-            rootEl.innerHTML = "<div><h4>Runtime Error</h4>" + error + "</div>";
+            handleError(error);
           }
         },
         false
@@ -58,7 +67,6 @@ const previewIframeCode = `
     </script>
   </body>
 </html>
-
   `;
 
 export default Preview;

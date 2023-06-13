@@ -1,5 +1,6 @@
 import * as React from "react";
-import CodeCell from "./components/code-cell";
+// import CodeCell from "./components/CodeCell";
+import TextEditor from "./components/TextEditor";
 
 const App = () => {
   React.useEffect(() => {
@@ -15,7 +16,13 @@ const App = () => {
       window.removeEventListener("error", handler);
     };
   }, []);
-  return <CodeCell />;
+  return (
+    <div>
+      <TextEditor />
+      <br />
+      {/* <CodeCell /> */}
+    </div>
+  );
 };
 
 export default App;
