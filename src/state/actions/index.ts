@@ -30,10 +30,30 @@ export interface UpdateCellAction {
   };
 }
 
+export interface BundleStartAction {
+  type: ActionType.BundleStart;
+  payload: {
+    cellId: string;
+  };
+}
+
+export interface BundleCompleteAction {
+  type: ActionType.BundleComplete;
+  payload: {
+    cellId: string;
+    bundle: {
+      code: string;
+      error: string;
+    };
+  };
+}
+
 export type Action =
   | MoveCellAction
   | DeleteCellAction
   | InsertCellAfterAction
-  | UpdateCellAction;
+  | UpdateCellAction
+  | BundleStartAction
+  | BundleCompleteAction;
 
 export type Direction = "up" | "down";
