@@ -14,8 +14,8 @@ export interface DeleteCellAction {
   payload: string;
 }
 
-export interface InsertCellBeforeAction {
-  type: ActionType.InsertCellBefore;
+export interface InsertCellAfterAction {
+  type: ActionType.InsertCellAfter;
   payload: {
     id: string | null;
     type: CellType;
@@ -33,7 +33,7 @@ export interface UpdateCellAction {
 export type Action =
   | MoveCellAction
   | DeleteCellAction
-  | InsertCellBeforeAction
+  | InsertCellAfterAction
   | UpdateCellAction;
 
 export type Direction = "up" | "down";

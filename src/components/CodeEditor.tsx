@@ -2,7 +2,7 @@ import * as React from "react";
 import MonacoEditor, { OnMount } from "@monaco-editor/react";
 import prettier from "prettier";
 import babelParser from "prettier/parser-babel";
-import "./code-editor.css";
+import "./CodeEditor.css";
 // import "./syntax.css"; // NOT Used (custom JSX highlighter with 'monaco-jsx-highlighter')
 
 interface CodeEditorProps {

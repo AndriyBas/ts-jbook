@@ -1,6 +1,6 @@
 import * as React from "react";
 import MDEditor from "@uiw/react-md-editor";
-import "./text-editor.css";
+import "./TextEditor.css";
 import { Cell } from "../state";
 import { useActions } from "../hooks/useActions";
 import ActionBar from "./ActionBar";
