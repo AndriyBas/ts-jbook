@@ -6,6 +6,7 @@ import { Cell } from "../state";
 import { useActions } from "../hooks/useActions";
 import { useTypedSelector } from "../hooks/useTypedSelector";
 import "./CodeCell.css";
+import { useCumulativeCode } from "../hooks/useCumulativeCode";
 
 interface CodeCellProps {
   cell: Cell;
@@ -16,43 +17,23 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const bundle = useTypedSelector(
     (state) => state.bundles && state.bundles[cell.id]
   );
-  const cumulativeCode = useTypedSelector((state) => {
-    const { data, order } = state.cells!;
-    const orderedCells = order.map((id) => data[id]);
-    const cummulativeCode: string[] = [
-      `
-      const show = (value) => {
-        if (typeof value === "object") {
-          document.querySelector("#root").innerHTML = JSON.stringify(value);
-        } else {
-          document.querySelector("#root").innerHTML = value;
-        }
-      };
-      `,
-    ];
-    for (let c of orderedCells) {
-      if (c.type === "code") cummulativeCode.push(c.content);
-      if (c.id === cell.id) break;
-    }
-    return cummulativeCode;
-  });
+  const cumulativeCode = useCumulativeCode(cell.id);
 
-  console.log(cumulativeCode);
-  const cumulativeCodeJoined = cumulativeCode.join("\n");
+  // console.log(cumulativeCode);
 
   React.useEffect(() => {
     if (!bundle) {
-      createBundle(cell.id, cumulativeCodeJoined);
+      createBundle(cell.id, cumulativeCode);
       return;
     }
     const timer = setTimeout(async () => {
-      createBundle(cell.id, cumulativeCodeJoined);
+      createBundle(cell.id, cumulativeCode);
     }, 1000);
     return () => {
       clearTimeout(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cumulativeCodeJoined, cell.id, createBundle]);
+  }, [cumulativeCode, cell.id, createBundle]);
 
   return (
     <Resizable direction="vertical">

@@ -56,7 +56,7 @@ store.dispatch({
   payload: {
     id: id1,
     content:
-      "const App = () => { return <div>Hello there!</div>;}\nconsole.log(App);",
+      "const App = () => { return <div>Hello there!</div>;}\nconsole.log(App);\nshow(<App />);",
   },
 });
 store.dispatch({
